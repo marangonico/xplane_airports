@@ -1,0 +1,1 @@
+WED_LINE_ENDING = '\n'
