@@ -5,7 +5,7 @@ from typing import List, Dict, Union, Iterable, Optional
 
 from xplane_airports.aptdat_line import AptDatLine
 from xplane_airports.globals import WED_LINE_ENDING
-from xplane_airports.runway import Runway
+from xplane_airports.runway import Runway, RunwayLand, RunwayWater, RunwayHelipad
 from xplane_airports.types import MetadataKey, RowCode, RunwayType
 
 
@@ -37,9 +37,18 @@ class Airport:
         self.load_runways()
 
     def load_runways(self):
+
         self.runways = []
         for aptdat_line in list(line for line in self.text if line.is_runway()):
-            self.runways.append(Runway(aptdat_line))
+
+            if aptdat_line.runway_type == RunwayType.LAND_RUNWAY:
+                runway_class = RunwayLand
+            elif aptdat_line.runway_type == RunwayType.WATER_RUNWAY:
+                runway_class = RunwayWater
+            elif aptdat_line.runway_type == RunwayType.HELIPAD:
+                runway_class = RunwayHelipad
+
+            self.runways.append(runway_class(aptdat_line))
 
     def __bool__(self):
         return bool(self.id)
