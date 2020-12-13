@@ -28,6 +28,7 @@ class RunwayEnd(object):
         self.number = rwy_end_values[0]
         self.lat = float(rwy_end_values[1])
         self.lon = float(rwy_end_values[2])
+        self.displaced_threshold = 0
 
 
 class Runway:
@@ -72,7 +73,6 @@ class RunwayWater(Runway):
 
     width: float
     surface_type: SurfaceType
-    shoulder_type: int
     runway_ends = List[RunwayEnd]
 
     def parse(self):
@@ -85,6 +85,8 @@ class RunwayHelipad(Runway):
 
     designator: str
     width: float
+    length: float
+    orientation: float
     shoulder_type: int
     runway_ends = List[RunwayEnd]
 
@@ -92,5 +94,8 @@ class RunwayHelipad(Runway):
         self.designator = self.aptdat_line_values[1]
         self.lat = float(self.aptdat_line_values[2])
         self.lon = float(self.aptdat_line_values[3])
+        self.orientation = float(self.aptdat_line_values[4])
+        self.length = float(self.aptdat_line_values[5])
+        self.width = float(self.aptdat_line_values[6])
         self.surface_type = SurfaceType(int(self.aptdat_line_values[7]))
 
